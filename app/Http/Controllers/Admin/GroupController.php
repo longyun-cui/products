@@ -69,5 +69,20 @@ class GroupController extends Controller
 
 
 
+    // 【select2】
+    public function select2_peoples()
+    {
+        return $this->repo->select2_peoples(request()->all());
+    }
+
+    // 【select2】
+    public function select2_products()
+    {
+        return $this->repo->select2_products(request()->all());
+    }
+
+
+
+
 
 }

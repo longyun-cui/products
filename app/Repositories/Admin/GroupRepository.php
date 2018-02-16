@@ -297,4 +297,39 @@ class GroupRepository {
     }
 
 
+
+    //
+    public function select2_peoples($post_data)
+    {
+        if(empty($post_data['keyword']))
+        {
+            $list =People::select(['id','name as text'])->orderBy('id','desc')->get()->toArray();
+        }
+        else
+        {
+            $keyword = "%{$post_data['keyword']}%";
+            $list =People::select(['id','name as text'])->where('name','like',"%$keyword%")->orderBy('id','desc')->get()->toArray();
+        }
+        return $list;
+    }
+
+    //
+    public function select2_products($post_data)
+    {
+        if(empty($post_data['keyword']))
+        {
+            $list =Product::select(['id','name as text'])->orderBy('id','desc')->get()->toArray();
+        }
+        else
+        {
+            $keyword = "%{$post_data['keyword']}%";
+            $list =Product::select(['id','name as text'])->where('name','like',"%$keyword%")->orderBy('id','desc')->get()->toArray();
+        }
+        return $list;
+    }
+
+
+
+
+
 }

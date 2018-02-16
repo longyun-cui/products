@@ -42,21 +42,68 @@
                 <input type="hidden" name="operate" value="{{$operate or 'create'}}" readonly>
                 <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
 
+                {{--类型--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">类别</label>
+                    <div class="col-md-8 ">
+                        @if(empty($data->type))
+                        <select name="type" id="type" style="width:100%;" onchange="select_type()">
+                            <option value="1" @if(!empty($data->type) && $data->type == 1) selected="selected" @endif>人物组</option>
+                            <option value="2" @if(!empty($data->type) && $data->type == 2) selected="selected" @endif>作品组</option>
+                        </select>
+                        @else
+                            <div class="form-control"><b>
+                                @if($data->type == 1) 人物组
+                                @elseif($data->type == 2) 作品组
+                                @endif
+                            </b></div>
+                        @endif
+                    </div>
+                </div>
+
+                {{--选择作者--}}
+                @if(empty($encode_id))
+                <div class="form-group" id="select-peoples">
+                    <label class="control-label col-md-2">选择作者</label>
+                    <div class="col-md-8 ">
+                        <select name="peoples[]" id="peoples" style="width:100%;" multiple="multiple"></select>
+                    </div>
+                </div>
+                @else
+                @if(!empty($data->type) && $data->type == 1)
+                <div class="form-group" id="select-peoples">
+                    <label class="control-label col-md-2">添加作者</label>
+                    <div class="col-md-8 ">
+                        <select name="peoples[]" id="peoples" style="width:100%;" multiple="multiple"></select>
+                    </div>
+                </div>
+                @endif
+                @endif
+
+                {{--选择作品--}}
+                @if(empty($encode_id))
+                <div class="form-group" id="select-products">
+                    <label class="control-label col-md-2">选择作品</label>
+                    <div class="col-md-8 ">
+                        <select name="products[]" id="products" style="width:100%;" multiple="multiple"></select>
+                    </div>
+                </div>
+                @else
+                @if(!empty($data->type) && $data->type == 2)
+                <div class="form-group" id="select-products">
+                    <label class="control-label col-md-2">添加作品</label>
+                    <div class="col-md-8 ">
+                        <select name="products[]" id="products" style="width:100%;" multiple="multiple"></select>
+                    </div>
+                </div>
+                @endif
+                @endif
+
                 {{--姓名--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">组名称</label>
                     <div class="col-md-8 ">
                         <div><input type="text" class="form-control" name="title" placeholder="请输入名称" value="{{$data->title or ''}}"></div>
-                    </div>
-                </div>
-                {{--类型--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">类别</label>
-                    <div class="col-md-8 ">
-                        <select name="type" id="type" style="width:100%;border-radius:0">
-                            <option value="1">人物组</option>
-                            <option value="2">作品组</option>
-                        </select>
                     </div>
                 </div>
                 {{--说明--}}
@@ -125,9 +172,20 @@
 @endsection
 
 
+
+
+@section('style')
+    <link href="https://cdn.bootcss.com/select2/4.0.5/css/select2.min.css" rel="stylesheet">
+@endsection
+
+
 @section('js')
+<script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>
 <script>
     $(function() {
+
+        select_type();
+
         // 修改幻灯片信息
         $("#edit-group-submit").on('click', function() {
             var options = {
@@ -146,6 +204,81 @@
             };
             $("#form-edit-group").ajaxSubmit(options);
         });
+
+        $('#peoples').select2({
+            ajax: {
+                url: "/admin/group/select2_peoples",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        keyword: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+
+                    params.page = params.page || 1;
+//                    console.log(data);
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 0,
+            theme: 'classic'
+        });
+
+        $('#products').select2({
+            ajax: {
+                url: "/admin/group/select2_products",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        keyword: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+
+                    params.page = params.page || 1;
+//                    console.log(data);
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 0,
+            theme: 'classic'
+        });
+
     });
+
+    function select_type()
+    {
+        var vs = $('select#type option:selected').val();
+        if(vs == 1)
+        {
+            $('#select-peoples').show();
+            $('#select-products').hide();
+        }
+        else if(vs == 2)
+        {
+            $('#select-peoples').hide();
+            $('#select-products').show();
+        }
+        $("#type").val(vs);
+    }
 </script>
 @endsection

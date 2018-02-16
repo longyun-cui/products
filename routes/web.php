@@ -109,7 +109,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
             Route::post('disable', $productController.'@disableAction');
 
 
-            Route::get('select2', $productController.'@select2');
+            Route::get('select2_peoples', $productController.'@select2_peoples');
 
         });
 
@@ -127,7 +127,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
             Route::post('disable', $groupController.'@disableAction');
 
 
-            Route::get('select2', $groupController.'@select2');
+            Route::get('select2_peoples', $groupController.'@select2_peoples');
+            Route::get('select2_products', $groupController.'@select2_products');
 
         });
     });

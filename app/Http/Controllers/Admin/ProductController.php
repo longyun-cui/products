@@ -67,10 +67,10 @@ class ProductController extends Controller
     }
 
 
-    // 【取消分享】
-    public function select2()
+    // 【select2】
+    public function select2_peoples()
     {
-        return $this->repo->select2(request()->all());
+        return $this->repo->select2_peoples(request()->all());
     }
 
 

@@ -239,7 +239,7 @@ class ProductRepository {
     }
 
     //
-    public function select2($post_data)
+    public function select2_peoples($post_data)
     {
         if(empty($post_data['keyword']))
         {

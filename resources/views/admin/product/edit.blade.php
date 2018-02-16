@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-2">作者</label>
                     <div class="col-md-8 ">
-                        <select name="people_id" id="people" style="width:100%;border-radius:0">
+                        <select name="people_id" id="people" style="width:100%;">
                             <option value="{{$data->people_id or ''}}">{{$data->people->name or '请选择作者'}}</option>
                         </select>
                     </div>
@@ -175,7 +175,7 @@
 
         $('#people').select2({
             ajax: {
-                url: "/admin/product/select2",
+                url: "/admin/product/select2_peoples",
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
@@ -187,7 +187,7 @@
                 processResults: function (data, params) {
 
                     params.page = params.page || 1;
-                    console.log(data);
+//                    console.log(data);
                     return {
                         results: data,
                         pagination: {
