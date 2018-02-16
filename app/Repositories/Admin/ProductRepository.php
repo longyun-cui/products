@@ -22,6 +22,9 @@ class ProductRepository {
     {
         $admin = Auth::guard("admin")->user();
         $query = Product::select("*")->with(['admin','people']);
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
+        if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
+        if(!empty($post_data['category'])) $query->where('category', 'like', "%{$post_data['category']}%");
         $total = $query->count();
 
         $draw  = isset($post_data['draw'])  ? $post_data['draw']  : 1;

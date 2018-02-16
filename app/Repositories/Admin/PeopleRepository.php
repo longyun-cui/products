@@ -27,6 +27,9 @@ class PeopleRepository {
     {
         $admin = Auth::guard("admin")->user();
         $query = People::select("*")->with(['admin']);
+        if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
+        if(!empty($post_data['major'])) $query->where('major', 'like', "%{$post_data['major']}%");
+        if(!empty($post_data['nation'])) $query->where('nation', 'like', "%{$post_data['nation']}%");
         $total = $query->count();
 
         $draw  = isset($post_data['draw'])  ? $post_data['draw']  : 1;

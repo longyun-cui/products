@@ -45,9 +45,9 @@
                         <th>操作</th>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><input type="text" class="form-control" name="name" /></td>
+                        <td><input type="text" class="form-control" name="title" /></td>
+                        <td><input type="text" class="form-control" name="category" /></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -58,7 +58,7 @@
                         <td></td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-success">搜索</button>
+                                <button type="button" class="btn btn-sm btn-success filter-submit">搜索</button>
                                 <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -110,10 +110,9 @@
                     "dataType" : 'json',
                     "data": function (d) {
                         d._token = $('meta[name="_token"]').attr('content');
-//                        d.nickname 	= $('input[name="nickname"]').val();
-//                        d.certificate_type_id = $('select[name="certificate_type_id"]').val();
-//                        d.certificate_state = $('select[name="certificate_state"]').val();
-//                        d.admin_name = $('input[name="admin_name"]').val();
+                        d.name = $('input[name="name"]').val();
+                        d.title = $('input[name="title"]').val();
+                        d.category = $('input[name="category"]').val();
 //
 //                        d.created_at_from = $('input[name="created_at_from"]').val();
 //                        d.created_at_to = $('input[name="created_at_to"]').val();
