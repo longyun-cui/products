@@ -18,7 +18,7 @@ class RootRepository {
 
     public function view_peoples($post_data)
     {
-        $peoples = People::select('*')->orderBy('id','desc')->get();
+        $peoples = People::select('*')->orderBy('id','desc')->paginate(20);
         return view('frontend.root.peoples')->with(['datas'=>$peoples,'people_active'=>'active']);
     }
 
@@ -36,7 +36,7 @@ class RootRepository {
 
     public function view_products($post_data)
     {
-        $products = Product::select('*')->with(['people'])->orderBy('id','desc')->get();
+        $products = Product::select('*')->with(['people'])->orderBy('id','desc')->paginate(20);
         return view('frontend.root.products')->with(['datas'=>$products,'product_active'=>'active']);
     }
 

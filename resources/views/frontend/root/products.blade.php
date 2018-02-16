@@ -59,6 +59,8 @@
     </div>
 @endforeach
 
+{{ $datas->links() }}
+
 @endsection
 
 
