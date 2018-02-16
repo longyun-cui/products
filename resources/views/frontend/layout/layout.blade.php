@@ -7,10 +7,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="{{ url('favicon.ico') }}">
-    <link rel="shortcut icon" href="{{ url('favicon.png') }}">
-    <link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="196x196" href="/favicon.png">
+    <link rel="shortcut icon" type="image/ico" href="{{ url('favicon.ico') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ url('favicon.png') }}">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="{{ url('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="196x196" href="{{ url('favicon.png') }}">
     <title>@yield('title')</title>
     <meta name="_token" content="{{ csrf_token() }}"/>
     <meta name="robots" content="all" />
