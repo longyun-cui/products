@@ -36,7 +36,7 @@ class RootRepository {
 
     public function view_products($post_data)
     {
-        $products = Product::select('*')->with(['people'])->orderBy('id','desc')->paginate(20);
+        $products = Product::select('*')->with(['peoples'])->orderBy('id','desc')->paginate(20);
         return view('frontend.root.products')->with(['datas'=>$products,'product_active'=>'active']);
     }
 
@@ -46,7 +46,7 @@ class RootRepository {
         $product_decode = decode($product_encode);
         if(!$product_decode && intval($product_decode) !== 0) return view('frontend.404');
 
-        $product = Product::with(['people'])->where('id',$product_decode)->first();
+        $product = Product::with(['peoples'])->where('id',$product_decode)->first();
         return view('frontend.root.product')->with(['data'=>$product]);
     }
 

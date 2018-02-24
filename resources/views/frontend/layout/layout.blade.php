@@ -91,7 +91,7 @@ desired effect
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="{{url('/')}}" class="logo" style="background-color:#222d32;text-align:left;">
+        <a href="{{url('/')}}" class="logo" style="background-color:#222d32;">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>集</b></span>
             <!-- logo for regular state and mobile devices -->

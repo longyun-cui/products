@@ -23,7 +23,9 @@
                 <h3 class="box-title">{{$data->title}}</h3>
                 <span>【{{ $data->category or '未知' }}】</span>
                 <span>【{{ $data->time or '未知' }}】</span>
-                <span><a href="{{url('/people?id='.encode($data->people_id))}}" target="_blank">{{$data->people->name or '未知'}}</a></span>
+                @foreach($data->peoples as $people)
+                    <span><a href="{{url('/people?id='.encode($people->id))}}" target="_blank">{{$people->name or '未知'}}</a></span>
+                @endforeach
             </div>
 
             @if(!empty($data->description))

@@ -19,10 +19,16 @@ class People extends Model
         return $this->belongsTo('App\Administrator','admin_id','id');
     }
 
-    // 作品
-    function products()
+    // 一对多 作品
+    function _products()
     {
         return $this->hasMany('App\Models\Product','people_id','id');
+    }
+
+    // 多对多 关联的作品
+    function products()
+    {
+        return $this->belongsToMany('App\Models\Product','pivot_product_people','people_id','product_id');
     }
 
     /**

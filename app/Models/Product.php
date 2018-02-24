@@ -25,6 +25,13 @@ class Product extends Model
         return $this->belongsTo('App\Models\People','people_id','id');
     }
 
+    // 多对多 关联的人
+    function peoples()
+    {
+        return $this->belongsToMany('App\Models\People','pivot_product_people','product_id','people_id');
+    }
+
+
     /**
      * 获得此作品的所有标签。
      */
