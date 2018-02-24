@@ -48,7 +48,7 @@
 
 
 <section class="content-header" style="margin-top:32px;margin-bottom:32px;padding:0;">
-    <h1>{{$people->name}} <small class=""><b>作品集</b></small></h1>
+    <h1><small class=""><b>{{$people->name or ''}} 作品集</b></small></h1>
 </section>
 
 

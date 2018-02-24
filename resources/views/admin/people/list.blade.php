@@ -150,14 +150,14 @@
                     },
                     {
                         'data': 'birth',
-                        'orderable': false,
+                        'orderable': true,
                         render: function(data, type, row, meta) {
                             return data == null ? '未知' : data;
                         }
                     },
                     {
                         'data': 'death',
-                        'orderable': false,
+                        'orderable': true,
                         render: function(data, type, row, meta) {
                             return data == null ? '至今' : data;
                         }
