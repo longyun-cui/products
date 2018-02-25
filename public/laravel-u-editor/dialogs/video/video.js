@@ -121,7 +121,8 @@
         if(!url) return false;
         if ( !checkNum( [width, height] ) ) return false;
         editor.execCommand('insertvideo', {
-            url: convert_url(url),
+            // url: convert_url(url),
+            url: url,
             width: width.value,
             height: height.value,
             align: align
@@ -279,6 +280,16 @@
             ' height="' + 280  + '"' +
             ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >' +
         '</embed>';
+
+
+        // $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
+        //     '<iframe class="previewVideo" frameborder="0"' +
+        //     ' src="' + url + '"' +
+        //     ' width="' + 420  + '"' +
+        //     ' height="' + 280  + '"' +
+        //     ' allowfullscreen>' +
+        // '</iframe>';
+
     }
 
 
