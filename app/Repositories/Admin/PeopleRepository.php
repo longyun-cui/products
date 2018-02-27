@@ -173,6 +173,7 @@ class PeopleRepository {
         {
             $bool = $people->delete();
             if(!$bool) throw new Exception("delete--people--fail");
+            $people->products()->detach();
 
             DB::commit();
             return response_success([]);

@@ -21,7 +21,7 @@ class ProductRepository {
     public function get_list_datatable($post_data)
     {
         $admin = Auth::guard("admin")->user();
-        $query = Product::select("*")->with(['admin','people']);
+        $query = Product::select("*")->with(['admin','people','peoples']);
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
         if(!empty($post_data['category'])) $query->where('category', 'like', "%{$post_data['category']}%");
@@ -50,6 +50,13 @@ class ProductRepository {
         {
             $list[$k]->encode_id = encode($v->id);
             if(!empty($list[$k]->people)) $list[$k]->people->encode_id = encode($v->people->id);
+            if(count($list[$k]->peoples))
+            {
+                foreach($list[$k]->peoples as $key => $val)
+                {
+                    $list[$k]->peoples[$key]->encode_id = encode($val->id);
+                }
+            }
         }
         return datatable_response($list, $draw, $total);
     }
@@ -89,14 +96,14 @@ class ProductRepository {
             'id.required' => '参数有误',
             'name.required' => '请输入后台名称',
             'title.required' => '请输入作品标题',
-            'people_id.required' => '请选择作者',
-            'people_id.numeric' => '请选择作者',
+//            'people_id.required' => '请选择作者',
+//            'people_id.numeric' => '请选择作者',
         ];
         $v = Validator::make($post_data, [
             'id' => 'required',
             'name' => 'required',
-            'title' => 'required',
-            'people_id' => 'required|numeric'
+            'title' => 'required'//,
+//            'people_id' => 'required|numeric'
         ], $messages);
         if ($v->fails())
         {
@@ -127,6 +134,15 @@ class ProductRepository {
             else throw new Exception("operate--error");
 
             $bool = $product->fill($post_data)->save();
+            if(!empty($post_data["people_id"]))
+            {
+                $product->peoples()->attach($post_data["people_id"]);
+            }
+            if(!empty($post_data["peoples"]))
+            {
+//                $product->peoples()->attach($post_data["peoples"]);
+                $product->peoples()->syncWithoutDetaching($post_data["peoples"]);
+            }
             if($bool)
             {
                 $encode_id = encode($product->id);
@@ -153,8 +169,8 @@ class ProductRepository {
         {
             DB::rollback();
 //            exit($e->getMessage());
-//            $msg = $e->getMessage();
-            $msg = '操作失败，请重试！';
+            $msg = $e->getMessage();
+//            $msg = '操作失败，请重试！';
             return response_fail([], $msg);
         }
     }
@@ -174,6 +190,7 @@ class ProductRepository {
         {
             $bool = $product->delete();
             if(!$bool) throw new Exception("delete--people--fail");
+            $product->peoples()->detach();
 
             DB::commit();
             return response_success([]);

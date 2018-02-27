@@ -40,6 +40,13 @@
                 <input type="hidden" name="operate" value="{{$operate or 'create'}}" readonly>
                 <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
 
+                {{--标题--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">标题</label>
+                    <div class="col-md-8 ">
+                        <div><input type="text" class="form-control" name="title" placeholder="请输入作品标题" value="{{$data->title or ''}}"></div>
+                    </div>
+                </div>
                 {{--名称--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">后台名称</label>
@@ -49,10 +56,10 @@
                 </div>
                 {{--作者--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">作者</label>
+                    <label class="control-label col-md-2">添加作者</label>
                     <div class="col-md-8 ">
-                        <select name="people_id" id="people" style="width:100%;">
-                            <option value="{{$data->people_id or ''}}">{{$data->people->name or '请选择作者'}}</option>
+                        <select name="peoples[]" id="people" style="width:100%;" multiple="multiple">
+                            {{--<option value="{{$data->people_id or 0}}">{{$data->people->name or '请选择作者'}}</option>--}}
                         </select>
                     </div>
                 </div>
@@ -61,13 +68,6 @@
                     <label class="control-label col-md-2">类别</label>
                     <div class="col-md-8 ">
                         <div><input type="text" class="form-control" name="category" placeholder="请输入类别" value="{{$data->category or ''}}"></div>
-                    </div>
-                </div>
-                {{--标题--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">标题</label>
-                    <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="title" placeholder="请输入作品标题" value="{{$data->title or ''}}"></div>
                     </div>
                 </div>
                 {{--时间--}}

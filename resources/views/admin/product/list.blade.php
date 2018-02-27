@@ -154,11 +154,18 @@
                         }
                     },
                     {
-                        'data': 'people_id',
+                        'data': 'peoples',
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return row.people == null ? '未知' :
-                            '<a target="_blank" href="/people?id='+row.people.encode_id+'">'+row.people.name+'</a>';
+                            var html = '';
+                            console.log(data);
+                            $.each(data,function( key, val ) {
+//                                console.log( key, val, this );
+                                html += '<a target="_blank" href="/people?id='+this.encode_id+'">【'+this.name+'】</a>';
+                            });
+                            return html;
+//                            return row.people == null ? '未知' :
+//                                '<a target="_blank" href="/people?id='+row.people.encode_id+'">'+row.people.name+'</a>';
                         }
                     },
                     {

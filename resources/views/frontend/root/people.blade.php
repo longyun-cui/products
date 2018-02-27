@@ -48,7 +48,7 @@
 
 
 <section class="content-header" style="margin-top:32px;margin-bottom:32px;padding:0;">
-    <h1><small class=""><b>{{$people->name or ''}} 作品集</b></small></h1>
+    <h1><small class=""><b>{{$people->name_ or ''}} 作品集</b></small></h1>
 </section>
 
 
@@ -72,6 +72,9 @@
                     <h3 class="box-title"><a href="{{url('/product?id='.encode($data->id))}}" target="_blank">{{$data->title}}</a></h3>
                     <span>【{{$data->category or '未知'}}】</span>
                     <span>【{{$data->time or '未知'}}】</span>
+                    @foreach($data->peoples as $p)
+                        <span><a href="{{url('/people?id='.encode($p->id))}}" target="_blank">【{{$p->name or '未知'}}】</a></span>
+                    @endforeach
                 </div>
 
                 @if(!empty($data->description))

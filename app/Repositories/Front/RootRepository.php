@@ -29,7 +29,7 @@ class RootRepository {
         if(!$people_decode && intval($people_decode) !== 0) return view('frontend.404');
 
         $people = People::select('*')->with([
-            'products'=>function($query) { $query->orderBy('id','desc'); }
+            'products'=>function($query) { $query->with(['peoples'])->orderBy('id','desc'); }
         ])->where('id',$people_decode)->first();
         return view('frontend.root.people')->with(['people'=>$people]);
     }
