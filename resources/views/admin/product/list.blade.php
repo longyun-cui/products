@@ -136,7 +136,6 @@
                         'data': 'encode_id',
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return data == null ? '' : data;
                             return '<a target="_blank" href="/product?id='+data+'">'+row.title+'</a>';
                         }
                     },
