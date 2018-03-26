@@ -31,7 +31,7 @@
                 <table class='table table-striped table-bordered' id='datatable_ajax'>
                     <thead>
                     <tr role='row' class='heading'>
-                        <th>后台名称</th>
+                        {{--<th>后台名称</th>--}}
                         <th>标题</th>
                         <th>类别</th>
                         <th>时间</th>
@@ -45,7 +45,7 @@
                         <th>操作</th>
                     </tr>
                     <tr>
-                        <td><input type="text" class="form-control" name="name" /></td>
+                        {{--<td><input type="text" class="form-control" name="name" /></td>--}}
                         <td><input type="text" class="form-control" name="title" /></td>
                         <td><input type="text" class="form-control" name="category" /></td>
                         <td></td>
@@ -125,18 +125,19 @@
                 "order": [],
                 "orderCellsTop": true,
                 "columns": [
+//                    {
+//                        "data": "encode_id",
+//                        'orderable': false,
+//                        render: function(data, type, row, meta) {
+//                            return '<a target="_blank" href="/product?id='+data+'">'+row.name+'</a>';
+//                        }
+//                    },
                     {
-                        "data": "encode_id",
-                        'orderable': false,
-                        render: function(data, type, row, meta) {
-                            return '<a target="_blank" href="/product?id='+data+'">'+row.name+'</a>';
-                        }
-                    },
-                    {
-                        'data': 'title',
+                        'data': 'encode_id',
                         'orderable': false,
                         render: function(data, type, row, meta) {
                             return data == null ? '' : data;
+                            return '<a target="_blank" href="/product?id='+data+'">'+row.title+'</a>';
                         }
                     },
                     {
