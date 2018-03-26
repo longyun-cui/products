@@ -33,9 +33,9 @@
                     <tr role='row' class='heading'>
                         {{--<th>后台名称</th>--}}
                         <th>标题</th>
+                        <th>作者</th>
                         <th>类别</th>
                         <th>时间</th>
-                        <th>作者</th>
                         <th>管理员</th>
                         <th>浏览数</th>
                         <th>分享数</th>
@@ -47,8 +47,8 @@
                     <tr>
                         {{--<td><input type="text" class="form-control" name="name" /></td>--}}
                         <td><input type="text" class="form-control" name="title" /></td>
-                        <td><input type="text" class="form-control" name="category" /></td>
                         <td></td>
+                        <td><input type="text" class="form-control" name="category" /></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -140,20 +140,6 @@
                         }
                     },
                     {
-                        'data': 'category',
-                        'orderable': true,
-                        render: function(data, type, row, meta) {
-                            return data == null ? '' : data;
-                        }
-                    },
-                    {
-                        'data': 'time',
-                        'orderable': true,
-                        render: function(data, type, row, meta) {
-                            return data == null ? '' : data;
-                        }
-                    },
-                    {
                         'data': 'peoples',
                         'orderable': false,
                         render: function(data, type, row, meta) {
@@ -166,6 +152,20 @@
                             return html;
 //                            return row.people == null ? '未知' :
 //                                '<a target="_blank" href="/people?id='+row.people.encode_id+'">'+row.people.name+'</a>';
+                        }
+                    },
+                    {
+                        'data': 'category',
+                        'orderable': true,
+                        render: function(data, type, row, meta) {
+                            return data == null ? '' : data;
+                        }
+                    },
+                    {
+                        'data': 'time',
+                        'orderable': true,
+                        render: function(data, type, row, meta) {
+                            return data == null ? '' : data;
                         }
                     },
                     {
