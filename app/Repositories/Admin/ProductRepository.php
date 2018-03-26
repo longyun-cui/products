@@ -94,14 +94,14 @@ class ProductRepository {
     {
         $messages = [
             'id.required' => '参数有误',
-            'name.required' => '请输入后台名称',
+//            'name.required' => '请输入后台名称',
             'title.required' => '请输入作品标题',
 //            'people_id.required' => '请选择作者',
 //            'people_id.numeric' => '请选择作者',
         ];
         $v = Validator::make($post_data, [
             'id' => 'required',
-            'name' => 'required',
+//            'name' => 'required',
             'title' => 'required'//,
 //            'people_id' => 'required|numeric'
         ], $messages);

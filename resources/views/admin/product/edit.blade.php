@@ -48,12 +48,12 @@
                     </div>
                 </div>
                 {{--名称--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">后台名称</label>
-                    <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="name" placeholder="请输入名称" value="{{$data->name or ''}}"></div>
-                    </div>
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--<label class="control-label col-md-2">后台名称</label>--}}
+                    {{--<div class="col-md-8 ">--}}
+                        {{--<div><input type="text" class="form-control" name="name" placeholder="请输入名称" value="{{$data->name or ''}}"></div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 {{--作者--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">添加作者</label>
