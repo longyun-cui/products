@@ -36,6 +36,10 @@ class PeopleRepository {
         $skip  = isset($post_data['start'])  ? $post_data['start']  : 0;
         $limit = isset($post_data['length']) ? $post_data['length'] : 20;
 
+        $query->addSelect(DB::raw('cast(birth as DECIMAL) as t'));
+        $query->addSelect(DB::raw('cast(birth as DATE) as tt'));
+        $query->addSelect(DB::raw('FROM_UNIXTIME(UNIX_TIMESTAMP(cast(birth as DATE))) as ttt'));
+
         if(isset($post_data['order']))
         {
             $columns = $post_data['columns'];
@@ -44,6 +48,8 @@ class PeopleRepository {
             $order_dir = $order['dir'];
 
             $field = $columns[$order_column]["data"];
+            if($field == "birth") $query->orderByRaw(DB::raw('cast(birth as SIGNED) '.$order_dir));
+            else if($field == "death") $query->orderByRaw(DB::raw('cast(death as SIGNED) '.$order_dir));
             $query->orderBy($field, $order_dir);
         }
         else $query->orderBy("updated_at", "desc");

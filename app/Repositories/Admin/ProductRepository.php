@@ -39,6 +39,7 @@ class ProductRepository {
             $order_dir = $order['dir'];
 
             $field = $columns[$order_column]["data"];
+            if($field == "time") $query->orderByRaw(DB::raw('cast(time as SIGNED) '.$order_dir));
             $query->orderBy($field, $order_dir);
         }
         else $query->orderBy("updated_at", "desc");
