@@ -46,9 +46,9 @@
                         <th>操作</th>
                     </tr>
                     <tr>
-                        <td><input type="text" class="form-control" name="name" /></td>
-                        <td><input type="text" class="form-control" name="major" /></td>
-                        <td><input type="text" class="form-control" name="nation" /></td>
+                        <td><input type="text" class="form-control people-search-keyup" name="name" /></td>
+                        <td><input type="text" class="form-control people-search-keyup" name="major" /></td>
+                        <td><input type="text" class="form-control people-search-keyup" name="nation" /></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -60,7 +60,7 @@
                         <td></td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-success filter-submit">搜索</button>
+                                <button type="button" class="btn btn-sm btn-success filter-submit" id="filter-submit">搜索</button>
                                 <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -318,6 +318,14 @@
 </script>
 <script>
     $(function() {
+
+        // 表格【查询】
+        $("#people-list-body").on('keyup', ".people-search-keyup", function(event) {
+            if(event.keyCode ==13)
+            {
+                $("#filter-submit").click();
+            }
+        });
 
         // 表格【删除】
         $("#people-list-body").on('click', ".people-delete-submit", function() {

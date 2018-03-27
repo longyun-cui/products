@@ -15,18 +15,9 @@
     <div class="row">
         <div class="col-md-12">
             <!-- BEGIN PORTLET-->
-            <div class="box panel-default
-                @if($loop->index % 7 == 0) box-info
-                @elseif($loop->index % 7 == 1) box-danger
-                @elseif($loop->index % 7 == 2) box-success
-                @elseif($loop->index % 7 == 3) box-default
-                @elseif($loop->index % 7 == 4) box-warning
-                @elseif($loop->index % 7 == 5) box-primary
-                @elseif($loop->index % 7 == 6) box-danger
-                @endif
-            ">
+            <div class="boxe panel-default">
 
-                <div class="box-header with-border panel-heading" style="margin:16px 0 8px;">
+                <div class="box-header with-border panel-heading">
                     <h3 class="box-title"><a href="{{url('/people?id='.encode($data->id))}}" target="_blank">{{$data->name or ''}}</a></h3>
                     @if(!empty($data->nation)) <span>【{{$data->nation or ''}}】</span> @endif
                     <span>【{{$data->birth or '未知'}} - {{$data->death or '至今'}}】</span>

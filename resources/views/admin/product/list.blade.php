@@ -46,9 +46,9 @@
                     </tr>
                     <tr>
                         {{--<td><input type="text" class="form-control" name="name" /></td>--}}
-                        <td><input type="text" class="form-control" name="title" /></td>
+                        <td><input type="text" class="form-control product-search-keyup" name="title" /></td>
                         <td></td>
-                        <td><input type="text" class="form-control" name="category" /></td>
+                        <td><input type="text" class="form-control product-search-keyup" name="category" /></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -58,7 +58,7 @@
                         <td></td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-success filter-submit">搜索</button>
+                                <button type="button" class="btn btn-sm btn-success filter-submit" id="filter-submit">搜索</button>
                                 <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -316,6 +316,14 @@
 </script>
 <script>
     $(function() {
+
+        // 表格【查询】
+        $("#product-list-body").on('keyup', ".product-search-keyup", function(event) {
+            if(event.keyCode ==13)
+            {
+                $("#filter-submit").click();
+            }
+        });
 
         // 表格【删除】
         $("#product-list-body").on('click', ".product-delete-submit", function() {
