@@ -1,7 +1,7 @@
 @extends('frontend.layout.layout')
 
-@section('title') {{$data->name}} @endsection
-@section('header') {{$data->name}} @endsection
+@section('title') {{$product->name}} @endsection
+@section('header') {{$product->name}} @endsection
 @section('description','作品')
 @section('breadcrumb')
     <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i>首页</a></li>
@@ -10,44 +10,63 @@
 
 @section('content')
 <div style="display:none;">
-    <input type="hidden" id="chart_id" value="{{$chart_encode or ''}}" readonly>
-    <input type="hidden" id="table_id" value="{{$table_encode or ''}}" readonly>
+    <input type="hidden" id="_id" value="{{$_encode or ''}}" readonly>
 </div>
 
-{{--作者--}}
-<div class="row">
-    <div class="col-md-12">
-        <div class="box panel-default box-info">
 
-            <div class="box-header with-border panel-heading" style="margin:16px 0 8px;">
-                <h3 class="box-title">{{$data->title}}</h3>
-                <span>【{{ $data->category or '未知' }}】</span>
-                <span>【{{ $data->time or '未知' }}】</span>
-                @foreach($data->peoples as $people)
-                    <span><a href="{{url('/people?id='.encode($people->id))}}" target="_blank">【{{$people->name or '未知'}}】</a></span>
-                @endforeach
-            </div>
+<div class="container">
 
-            @if(!empty($data->description))
-                <div class="box-body">
-                    <div class="colo-md-12 text-muted"> {{ $data->description or '' }} </div>
+    <div class="col-sm-12 col-md-9 container-body-left">
+
+        {{--作品--}}
+        @include('frontend.component.products', ['datas' => $products])
+
+    </div>
+
+    <div class="col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
+
+        <div class="box-body right-menu" style="background:#fff;">
+
+            <a href="{{url('/peoples')}}">
+                <div class="box-body {{ $people_active or '' }}">
+                    <i class="fa fa-list text-orange"></i> <span>&nbsp; 人物集</span>
                 </div>
-            @endif
+            </a>
 
-            @if(!empty($data->content))
-                <div class="box-body">
-                    <div class="colo-md-12"> {!! $data->content or '' !!}  </div>
+            <a href="{{url('/products')}}">
+                <div class="box-body {{ $product_active or '' }}">
+                    <i class="fa fa-list text-orange"></i> <span>&nbsp; 作品集</span>
                 </div>
-            @endif
-
-            <div class="box-footer">
-                &nbsp;
-            </div>
+            </a>
 
         </div>
-    </div>
-</div>
 
+        <div class="box-body right-home" style="margin-top:16px;background:#fff;">
+
+            @if(!Auth::guard('admin')->check())
+                <a href="{{url('/login')}}">
+                    <div class="box-body">
+                        <i class="fa fa-circle-o text-blue"></i> <span>&nbsp; 登录</span>
+                    </div>
+                </a>
+                <a href="{{url('/register')}}">
+                    <div class="box-body">
+                        <i class="fa fa-circle-o text-blue"></i> <span>&nbsp; 注册</span>
+                    </div>
+                </a>
+            @else
+                <a href="{{url('/admin')}}">
+                    <div class="box-body">
+                        <i class="fa fa-home text-blue"></i> <span>&nbsp; 返回我的后台</span>
+                    </div>
+                </a>
+            @endif
+
+        </div>
+
+    </div>
+
+</div>
 @endsection
 
 

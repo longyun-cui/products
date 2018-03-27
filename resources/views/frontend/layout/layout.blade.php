@@ -59,7 +59,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{asset('css/common.css')}}">
-    <link rel="stylesheet" href="{{asset('css/front/index.css')}}">
+    <link rel="stylesheet" href="{{asset('css/frontend/index.css')}}">
 
     @yield('style')
 
@@ -91,7 +91,7 @@ desired effect
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="{{url('/')}}" class="logo" style="background-color:#222d32;">
+        <a href="{{url('/')}}" class="logo" style="display:none;background-color:#222d32;">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>集</b></span>
             <!-- logo for regular state and mobile devices -->
@@ -99,11 +99,16 @@ desired effect
         </a>
 
         <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation" style="background-color:#1a2226;">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-left:0;background-color:#1a2226;">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <a href="#" class="sidebar-toggle visible-xs" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
+
+            <div class="navbar-custom-menu" style="height:50px;float:left;">
+                <span class="logo-big"><a href="{{url('/')}}"><img src="/favicon_transparent.png" class="img-icon" alt="Image"> <b>原子</b></a></span>
+            </div>
+
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
@@ -120,7 +125,7 @@ desired effect
 
 
     {{--<!-- Left side column. contains the logo and sidebar -->--}}
-    <aside class="main-sidebar">
+    <aside class="main-sidebar visible-xs">
 
         {{--<!-- sidebar: style can be found in sidebar.less -->--}}
         <section class="sidebar">
@@ -151,9 +156,9 @@ desired effect
 
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="margin-left:0;background:url(/bg.gif) repeat;">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
+        <section class="content-header" style="display:none;">
             <h1>
                 @yield('header')
                 <small>@yield('description')</small>
@@ -164,7 +169,7 @@ desired effect
         </section>
 
         <!-- Main content -->
-        <section class="content" style="margin-top:16px;">
+        <section class="content" id="content-container">
             @yield('content') {{--Your Page Content Here--}}
         </section>
         <!-- /.content -->
@@ -172,7 +177,7 @@ desired effect
     <!-- /.content-wrapper -->
 
     {{--<!-- Main Footer -->--}}
-    <footer class="main-footer">
+    <footer class="main-footer" style="margin-left:0;">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
             Anything you want
@@ -295,7 +300,7 @@ desired effect
 </script>
 
 
-<script src="{{asset('js/admin/index.js')}}"></script>
+<script src="{{asset('js/frontend/index.js')}}"></script>
 
 @yield('js')
 

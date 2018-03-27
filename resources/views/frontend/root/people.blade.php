@@ -10,95 +10,69 @@
 
 @section('content')
 <div style="display:none;">
-    <input type="hidden" id="chart_id" value="{{$chart_encode or ''}}" readonly>
-    <input type="hidden" id="table_id" value="{{$table_encode or ''}}" readonly>
+    <input type="hidden" id="_id" value="{{$_encode or ''}}" readonly>
 </div>
 
-{{--作者--}}
-<div class="row">
-    <div class="col-md-12">
-        <div class="box panel-default box-info">
+<div class="container">
 
-            <div class="box-header with-border panel-heading" style="margin:16px 0 8px;">
-                <h3 class="box-title">{{$people->name}}</h3>
-                @if(!empty($people->nation)) <span>【{{$people->nation or ''}}】</span> @endif
-                <span>【{{$people->birth or '未知'}} - {{$people->death or '至今'}}】</span>
-                <span>【{{$people->major or '未知'}}】</span>
-            </div>
+    <div class="col-sm-12 col-md-9 container-body-left">
 
-            @if(!empty($people->description))
-                <div class="box-body">
-                    <div class="colo-md-12 text-muted"> {{ $people->description or '' }} </div>
+        {{--作者--}}
+        @include('frontend.component.peoples', ['datas' => $peoples])
+
+        <div class="content-header box-body" style="margin-top:32px;margin-bottom:16px;padding:0;">
+            <h1><small class=""><b>{{$people->name_ or ''}} 作品集</b></small></h1>
+        </div>
+
+        {{--作品集--}}
+        @include('frontend.component.products', ['datas' => $people->products])
+
+    </div>
+
+    <div class="col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
+
+        <div class="box-body right-menu" style="background:#fff;">
+
+            <a href="{{url('/peoples')}}">
+                <div class="box-body {{ $people_active or '' }}">
+                    <i class="fa fa-list text-orange"></i> <span>&nbsp; 人物集</span>
                 </div>
-            @endif
+            </a>
 
-            @if(!empty($people->content))
-                <div class="box-body">
-                    <div class="colo-md-12"> {!! $people->content or '' !!}  </div>
+            <a href="{{url('/products')}}">
+                <div class="box-body {{ $product_active or '' }}">
+                    <i class="fa fa-list text-orange"></i> <span>&nbsp; 作品集</span>
                 </div>
-            @endif
-
-            <div class="box-footer">
-                &nbsp;
-            </div>
+            </a>
 
         </div>
+
+        <div class="box-body right-home" style="margin-top:16px;background:#fff;">
+
+            @if(!Auth::guard('admin')->check())
+                <a href="{{url('/login')}}">
+                    <div class="box-body">
+                        <i class="fa fa-circle-o text-blue"></i> <span>&nbsp; 登录</span>
+                    </div>
+                </a>
+                <a href="{{url('/register')}}">
+                    <div class="box-body">
+                        <i class="fa fa-circle-o text-blue"></i> <span>&nbsp; 注册</span>
+                    </div>
+                </a>
+            @else
+                <a href="{{url('/admin')}}">
+                    <div class="box-body">
+                        <i class="fa fa-home text-blue"></i> <span>&nbsp; 返回我的后台</span>
+                    </div>
+                </a>
+            @endif
+
+        </div>
+
     </div>
+
 </div>
-
-
-<section class="content-header" style="margin-top:32px;margin-bottom:32px;padding:0;">
-    <h1><small class=""><b>{{$people->name_ or ''}} 作品集</b></small></h1>
-</section>
-
-
-{{--作品集--}}
-@foreach($people->products as $num => $data)
-    <div class="row">
-        <div class="col-md-12">
-            <!-- BEGIN PORTLET-->
-            <div class="box panel-default
-                @if($loop->index % 7 == 0) box-primary
-                @elseif($loop->index % 7 == 1) box-danger
-                @elseif($loop->index % 7 == 2) box-success
-                @elseif($loop->index % 7 == 3) box-warning
-                @elseif($loop->index % 7 == 4) box-default
-                @elseif($loop->index % 7 == 5) box-primary
-                @elseif($loop->index % 7 == 6) box-info
-                @endif
-            ">
-
-                <div class="box-header with-border panel-heading" style="margin:16px 0 8px;">
-                    <h3 class="box-title"><a href="{{url('/product?id='.encode($data->id))}}" target="_blank">{{$data->title}}</a></h3>
-                    <span>【{{$data->category or '未知'}}】</span>
-                    <span>【{{$data->time or '未知'}}】</span>
-                    @foreach($data->peoples as $p)
-                        <span><a href="{{url('/people?id='.encode($p->id))}}" target="_blank">【{{$p->name or '未知'}}】</a></span>
-                    @endforeach
-                </div>
-
-                @if(!empty($data->description))
-                    <div class="box-body">
-                        <div class="colo-md-12 text-muted"> {{ $data->description or '' }} </div>
-                    </div>
-                @endif
-
-                @if(!empty($data->content))
-                    <div class="box-body">
-                        <div class="colo-md-12"> {!! $data->content or '' !!}  </div>
-                    </div>
-                @endif
-
-                <div class="box-footer">
-                    &nbsp;
-                </div>
-
-            </div>
-            <!-- END PORTLET-->
-        </div>
-    </div>
-@endforeach
-
 @endsection
 
 

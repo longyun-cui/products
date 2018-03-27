@@ -19,7 +19,7 @@ class RootRepository {
     public function view_peoples($post_data)
     {
         $peoples = People::select('*')->orderBy('id','desc')->paginate(20);
-        return view('frontend.root.peoples')->with(['datas'=>$peoples,'people_active'=>'active']);
+        return view('frontend.root.peoples')->with(['peoples'=>$peoples,'people_active'=>'active']);
     }
 
     public function view_people($post_data)
@@ -31,13 +31,15 @@ class RootRepository {
         $people = People::select('*')->with([
             'products'=>function($query) { $query->with(['peoples'])->orderBy('id','desc'); }
         ])->where('id',$people_decode)->first();
-        return view('frontend.root.people')->with(['people'=>$people]);
+        $peoples[0] = $people;
+        return view('frontend.root.people')->with(['people'=>$people,'peoples'=>$peoples]);
     }
 
     public function view_products($post_data)
     {
         $products = Product::select('*')->with(['peoples'])->orderBy('id','desc')->paginate(20);
-        return view('frontend.root.products')->with(['datas'=>$products,'product_active'=>'active']);
+//        dd($products->toArray());
+        return view('frontend.root.products')->with(['products'=>$products,'product_active'=>'active']);
     }
 
     public function view_product($post_data)
@@ -47,7 +49,8 @@ class RootRepository {
         if(!$product_decode && intval($product_decode) !== 0) return view('frontend.404');
 
         $product = Product::with(['peoples'])->where('id',$product_decode)->first();
-        return view('frontend.root.product')->with(['data'=>$product]);
+        $products[0] = $product;
+        return view('frontend.root.product')->with(['product'=>$product,'products'=>$products]);
     }
 
 

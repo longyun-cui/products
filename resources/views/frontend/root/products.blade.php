@@ -10,59 +10,63 @@
 
 @section('content')
 <div style="display:none;">
-    <input type="hidden" id="chart_id" value="{{$chart_encode or ''}}" readonly>
-    <input type="hidden" id="table_id" value="{{$table_encode or ''}}" readonly>
+    <input type="hidden" id="_id" value="{{$_encode or ''}}" readonly>
 </div>
 
-{{--作品--}}
-@foreach($datas as $num => $data)
-    <div class="row">
-        <div class="col-md-12">
-            <!-- BEGIN PORTLET-->
-            <div class="box panel-default
-                @if($loop->index % 7 == 0) box-info
-                @elseif($loop->index % 7 == 1) box-danger
-                @elseif($loop->index % 7 == 2) box-success
-                @elseif($loop->index % 7 == 3) box-default
-                @elseif($loop->index % 7 == 4) box-warning
-                @elseif($loop->index % 7 == 5) box-primary
-                @elseif($loop->index % 7 == 6) box-danger
-                @endif
-            ">
 
-                <div class="box-header with-border panel-heading" style="margin:16px 0 8px;">
-                    <h3 class="box-title"><a href="{{url('/product?id='.encode($data->id))}}" target="_blank">{{$data->title or ''}}</a></h3>
-                    <span>【{{ $data->category or '未知' }}】</span>
-                    <span>【{{ $data->time or '未知' }}】</span>
-                    @foreach($data->peoples as $people)
-                        <span><a href="{{url('/people?id='.encode($people->id))}}" target="_blank">【{{$people->name or '未知'}}】</a></span>
-                    @endforeach
-                </div>
+<div class="container">
 
-                @if(!empty($data->description))
-                    <div class="box-body">
-                        <div class="colo-md-12 text-muted"> {{ $data->description or '' }} </div>
-                    </div>
-                @endif
+    <div class="col-sm-12 col-md-9 container-body-left">
 
-                @if(!empty($data->content))
-                    <div class="box-body">
-                        <div class="colo-md-12"> {!! $data->content or '' !!}  </div>
-                    </div>
-                @endif
+        @include('frontend.component.products', ['datas' => $products])
+        {{ $products->links() }}
 
-                <div class="box-footer">
-                    &nbsp;
-                </div>
-
-            </div>
-            <!-- END PORTLET-->
-        </div>
     </div>
-@endforeach
 
-{{ $datas->links() }}
+    <div class="col-sm-12 col-md-3 hidden-xs hidden-sm container-body-right">
 
+        <div class="box-body right-menu" style="background:#fff;">
+
+            <a href="{{url('/peoples')}}">
+                <div class="box-body {{ $people_active or '' }}">
+                    <i class="fa fa-list text-orange"></i> <span>&nbsp; 人物集</span>
+                </div>
+            </a>
+
+            <a href="{{url('/products')}}">
+                <div class="box-body {{ $product_active or '' }}">
+                    <i class="fa fa-list text-orange"></i> <span>&nbsp; 作品集</span>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="box-body right-home" style="margin-top:16px;background:#fff;">
+
+            @if(!Auth::guard('admin')->check())
+                <a href="{{url('/login')}}">
+                    <div class="box-body">
+                        <i class="fa fa-circle-o text-blue"></i> <span>&nbsp; 登录</span>
+                    </div>
+                </a>
+                <a href="{{url('/register')}}">
+                    <div class="box-body">
+                        <i class="fa fa-circle-o text-blue"></i> <span>&nbsp; 注册</span>
+                    </div>
+                </a>
+            @else
+                <a href="{{url('/admin')}}">
+                    <div class="box-body">
+                        <i class="fa fa-home text-blue"></i> <span>&nbsp; 返回我的后台</span>
+                    </div>
+                </a>
+            @endif
+
+        </div>
+
+    </div>
+
+</div>
 @endsection
 
 

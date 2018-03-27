@@ -144,7 +144,7 @@
                         'orderable': false,
                         render: function(data, type, row, meta) {
                             var html = '';
-                            console.log(data);
+//                            console.log(data);
                             $.each(data,function( key, val ) {
 //                                console.log( key, val, this );
                                 html += '<a target="_blank" href="/people?id='+this.encode_id+'">'+this.name+'</a><br>';
