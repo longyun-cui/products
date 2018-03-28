@@ -7,8 +7,8 @@ class Product extends Model
     //
     protected $table = "products";
     protected $fillable = [
-        'sort', 'type', 'active', 'admin_id', 'people_id', 'category', 'name', 'title', 'description', 'content', 'time', 'is_shared',
-        'visit_num', 'share_num'
+        'sort', 'type', 'active', 'admin_id', 'people_id', 'category', 'name', 'title', 'description', 'content', 'time', 'cover_pic',
+        'is_shared', 'visit_num', 'share_num'
     ];
     protected $dateFormat = 'U';
 

@@ -1,11 +1,11 @@
 @extends('admin.layout.layout')
 
-@section('title','作者列表')
-@section('header','作者列表')
-@section('description','作者列表')
+@section('title','事件列表')
+@section('header','事件列表')
+@section('description','事件列表')
 @section('breadcrumb')
     <li><a href="{{url('/admin')}}"><i class="fa fa-home"></i>首页</a></li>
-    <li><a href="{{url('/admin/people/list')}}"><i class="fa "></i>作者列表</a></li>
+    <li><a href="{{url('/admin/event/list')}}"><i class="fa "></i>事件列表</a></li>
     <li><a href="#"><i class="fa "></i>Here</a></li>
 @endsection
 
@@ -17,39 +17,35 @@
         <div class="box box-info">
 
             <div class="box-header with-border" style="margin:16px 0;">
-                <h3 class="box-title">作者列表</h3>
+                <h3 class="box-title">事件列表</h3>
 
                 <div class="pull-right">
-                    <a href="{{url('/admin/people/create')}}">
-                        <button type="button" onclick="" class="btn btn-success pull-right"><i class="fa fa-plus"></i> 添加作者</button>
+                    <a href="{{url('/admin/event/create')}}">
+                        <button type="button" onclick="" class="btn btn-success pull-right"><i class="fa fa-plus"></i> 添加事件</button>
                     </a>
                 </div>
             </div>
 
-            <div class="box-body" id="people-list-body">
+            <div class="box-body" id="event-list-body">
                 <!-- datatable start -->
                 <table class='table table-striped table-bordered' id='datatable_ajax'>
                     <thead>
                     <tr role='row' class='heading'>
                         <th>姓名</th>
-                        <th>职业</th>
-                        <th>国家</th>
-                        <th>出生日期</th>
-                        <th>去世时间</th>
+                        <th>类别</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
                         <th>管理员</th>
                         <th>浏览数</th>
                         <th>分享数</th>
                         <th>状态</th>
                         <th>创建时间</th>
                         <th>修改时间</th>
-                        <th>查看作品</th>
                         <th>操作</th>
                     </tr>
                     <tr>
-                        <td><input type="text" class="form-control people-search-keyup" name="name" /></td>
-                        <td><input type="text" class="form-control people-search-keyup" name="major" /></td>
-                        <td><input type="text" class="form-control people-search-keyup" name="nation" /></td>
-                        <td></td>
+                        <td><input type="text" class="form-control people-search-keyup" name="title" /></td>
+                        <td><input type="text" class="form-control people-search-keyup" name="category" /></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -107,14 +103,13 @@
                 "serverSide": true,
                 "searching": false,
                 "ajax": {
-                    'url': '/admin/people/list',
+                    'url': '/admin/event/list',
                     "type": 'POST',
                     "dataType" : 'json',
                     "data": function (d) {
                         d._token = $('meta[name="_token"]').attr('content');
-                        d.name 	= $('input[name="name"]').val();
-                        d.major 	= $('input[name="major"]').val();
-                        d.nation 	= $('input[name="nation"]').val();
+                        d.title 	= $('input[name="title"]').val();
+                        d.category 	= $('input[name="category"]').val();
 //
 //                        d.created_at_from = $('input[name="created_at_from"]').val();
 //                        d.created_at_to = $('input[name="created_at_to"]').val();
@@ -131,32 +126,25 @@
                         "data": "encode_id",
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return '<a target="_blank" href="/people?id='+data+'">'+row.name+'</a>';
+                            return '<a target="_blank" href="/people?id='+data+'">'+row.title+'</a>';
                         }
                     },
                     {
-                        'data': 'major',
+                        'data': 'category',
                         'orderable': false,
                         render: function(data, type, row, meta) {
                             return data == null ? '未知' : data;
                         }
                     },
                     {
-                        'data': 'nation',
-                        'orderable': false,
-                        render: function(data, type, row, meta) {
-                            return data == null ? '未知' : data;
-                        }
-                    },
-                    {
-                        'data': 'birth',
+                        'data': 'start_time',
                         'orderable': true,
                         render: function(data, type, row, meta) {
                             return data == null ? '未知' : data;
                         }
                     },
                     {
-                        'data': 'death',
+                        'data': 'end_time',
                         'orderable': true,
                         render: function(data, type, row, meta) {
                             return data == null ? '至今' : data;
@@ -212,19 +200,12 @@
                     {
                         'data': 'encode_id',
                         'orderable': false,
-                        render: function(data) {
-                            return '<a target="_blank" href="/admin/people/product?id='+data+'"><button type="button" class="btn btn-sm bg-purple">查看作品</button></a>';
-                        }
-                    },
-                    {
-                        'data': 'encode_id',
-                        'orderable': false,
                         render: function(data, type, row, meta) {
                             var active_html = '';
                             if(row.active == 1)
-                                active_html = '<li><a class="people-disable-submit" data-id="'+data+'">禁用</a></li>';
+                                active_html = '<li><a class="event-disable-submit" data-id="'+data+'">禁用</a></li>';
                             else
-                                active_html = '<li><a class="people-enable-submit" data-id="'+data+'">启用</a></li>';
+                                active_html = '<li><a class="event-enable-submit" data-id="'+data+'">启用</a></li>';
 
                             var html =
                                 '<div class="btn-group">'+
@@ -234,12 +215,11 @@
                                 '<span class="sr-only">Toggle Dropdown</span>'+
                                 '</button>'+
                                 '<ul class="dropdown-menu" role="menu">'+
-                                '<li><a href="/admin/people/edit?id='+data+'">编辑</a></li>'+
-                                '<li><a href="/admin/people/product?id='+data+'">作品列表</a></li>'+
+                                '<li><a href="/admin/event/edit?id='+data+'">编辑</a></li>'+
                                 active_html+
 //                                '<li><a href="/admin/statistics/page?module=2&id='+data+'">流量统计</a></li>'+
 //                                '<li><a class="download-qrcode" data-id="'+data+'">下载二维码</a></li>'+
-                                '<li><a class="people-delete-submit" data-id="'+data+'" >删除</a></li>'+
+                                '<li><a class="event-delete-submit" data-id="'+data+'" >删除</a></li>'+
                                 '<li class="divider"></li>'+
                                 '<li><a href="#">Separated link</a></li>'+
                                 '</ul>'+
@@ -320,7 +300,7 @@
     $(function() {
 
         // 表格【查询】
-        $("#people-list-body").on('keyup', ".people-search-keyup", function(event) {
+        $("#event-list-body").on('keyup', ".event-search-keyup", function(event) {
             if(event.keyCode ==13)
             {
                 $("#filter-submit").click();
@@ -328,14 +308,14 @@
         });
 
         // 表格【删除】
-        $("#people-list-body").on('click', ".people-delete-submit", function() {
+        $("#event-list-body").on('click', ".event-delete-submit", function() {
             var that = $(this);
-            layer.msg('确定要删除该"作者"么', {
+            layer.msg('确定要删除该"事件"么', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/admin/people/delete",
+                            "/admin/event/delete",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')
@@ -351,14 +331,14 @@
         });
 
         // 表格【分享】
-        $("#people-list-body").on('click', ".people-enable-submit", function() {
+        $("#event-list-body").on('click', ".event-enable-submit", function() {
             var that = $(this);
-            layer.msg('确定启用该"作者"？', {
+            layer.msg('确定启用该"事件"？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/admin/people/enable",
+                            "/admin/event/enable",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')
@@ -374,14 +354,14 @@
         });
 
         // 表格【取消分享】
-        $("#people-list-body").on('click', ".people-disable-submit", function() {
+        $("#event-list-body").on('click', ".event-disable-submit", function() {
             var that = $(this);
-            layer.msg('确定禁用该"作者"？', {
+            layer.msg('确定禁用该"事件"？', {
                 time: 0
                 ,btn: ['确定', '取消']
                 ,yes: function(index){
                     $.post(
-                            "/admin/people/disable",
+                            "/admin/event/disable",
                             {
                                 _token: $('meta[name="_token"]').attr('content'),
                                 id:that.attr('data-id')

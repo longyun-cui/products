@@ -1,20 +1,20 @@
 @extends('admin.layout.layout')
 
 @section('title')
-    @if(empty($encode_id)) 添加作品 @else 编辑作品 @endif
+    @if(empty($encode_id)) 添加事件 @else 编辑事件 @endif
 @endsection
 
 @section('header')
-    @if(empty($encode_id)) 添加作品 @else 编辑作品 @endif
+    @if(empty($encode_id)) 添加事件 @else 编辑事件 @endif
 @endsection
 
 @section('description')
-    @if(empty($encode_id)) 添加作品 @else 编辑作品 @endif
+    @if(empty($encode_id)) 添加事件 @else 编辑事件 @endif
 @endsection
 
 @section('breadcrumb')
     <li><a href="{{url('/admin')}}"><i class="fa fa-dashboard"></i>首页</a></li>
-    <li><a href="{{url('/admin/product/list')}}"><i class="fa "></i>作品列表</a></li>
+    <li><a href="{{url('/admin/event/list')}}"><i class="fa "></i>事件列表</a></li>
     <li><a href="#"><i class="fa "></i>Here</a></li>
 @endsection
 
@@ -26,55 +26,48 @@
         <div class="box box-info">
 
             <div class="box-header with-border" style="margin:16px 0;">
-                <h3 class="box-title"> @if(empty($encode_id)) 添加作品 @else 编辑作品 @endif </h3>
+                <h3 class="box-title"> @if(empty($encode_id)) 添加事件 @else 编辑事件 @endif </h3>
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
+                        <i class="fa fa-times"></i></button>
                 </div>
             </div>
 
-            <form action="" method="post" class="form-horizontal form-bordered" id="form-edit-product">
+            <form action="" method="post" class="form-horizontal form-bordered" id="form-edit-event">
             <div class="box-body">
 
                 {{csrf_field()}}
                 <input type="hidden" name="operate" value="{{$operate or 'create'}}" readonly>
                 <input type="hidden" name="id" value="{{$encode_id or encode(0)}}" readonly>
 
-                {{--标题--}}
+                {{--姓名--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">标题</label>
+                    <label class="control-label col-md-2">事件名称</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="title" placeholder="请输入作品标题" value="{{$data->title or ''}}"></div>
+                        <div><input type="text" class="form-control" name="title" placeholder="请输入事件名称" value="{{$data->title or ''}}"></div>
                     </div>
                 </div>
-                {{--名称--}}
-                {{--<div class="form-group">--}}
-                    {{--<label class="control-label col-md-2">后台名称</label>--}}
-                    {{--<div class="col-md-8 ">--}}
-                        {{--<div><input type="text" class="form-control" name="name" placeholder="请输入名称" value="{{$data->name or ''}}"></div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--作者--}}
-                <div class="form-group">
-                    <label class="control-label col-md-2">添加作者</label>
-                    <div class="col-md-8 ">
-                        <select name="peoples[]" id="people" style="width:100%;" multiple="multiple">
-                            {{--<option value="{{$data->people_id or 0}}">{{$data->people->name or '请选择作者'}}</option>--}}
-                        </select>
-                    </div>
-                </div>
-                {{--类别--}}
+                {{--职位--}}
                 <div class="form-group">
                     <label class="control-label col-md-2">类别</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="category" placeholder="请输入类别" value="{{$data->category or ''}}"></div>
+                        <div><input type="text" class="form-control" name="category" placeholder="类别" value="{{$data->category or ''}}"></div>
                     </div>
                 </div>
-                {{--时间--}}
+                {{--出生日期--}}
                 <div class="form-group">
-                    <label class="control-label col-md-2">时间</label>
+                    <label class="control-label col-md-2">开始时间</label>
                     <div class="col-md-8 ">
-                        <div><input type="text" class="form-control" name="time" placeholder="请输入时间" value="{{$data->time or ''}}"></div>
+                        <div><input type="text" class="form-control" name="start_time" placeholder="请输入开始时间" value="{{$data->start_time or ''}}"></div>
+                    </div>
+                </div>
+                {{--逝世时间--}}
+                <div class="form-group">
+                    <label class="control-label col-md-2">结束时间</label>
+                    <div class="col-md-8 ">
+                        <div><input type="text" class="form-control" name="end_time" placeholder="请输入结束时间" value="{{$data->end_time or ''}}"></div>
                     </div>
                 </div>
                 {{--说明--}}
@@ -131,7 +124,7 @@
             <div class="box-footer">
                 <div class="row" style="margin:16px 0;">
                     <div class="col-md-8 col-md-offset-2">
-                        <button type="button" class="btn btn-primary" id="edit-product-submit"><i class="fa fa-check"></i> 提交</button>
+                        <button type="button" class="btn btn-primary" id="edit-event-submit"><i class="fa fa-check"></i> 提交</button>
                         <button type="button" onclick="history.go(-1);" class="btn btn-default">返回</button>
                     </div>
                 </div>
@@ -143,21 +136,13 @@
 @endsection
 
 
-
-@section('style')
-<link href="https://cdn.bootcss.com/select2/4.0.5/css/select2.min.css" rel="stylesheet">
-@endsection
-
-
-
 @section('js')
-<script src="https://cdn.bootcss.com/select2/4.0.5/js/select2.min.js"></script>
 <script>
     $(function() {
-        // 修改作品信息
-        $("#edit-product-submit").on('click', function() {
+        // 修改事件信息
+        $("#edit-event-submit").on('click', function() {
             var options = {
-                url: "/admin/product/edit",
+                url: "/admin/event/edit",
                 type: "post",
                 dataType: "json",
                 // target: "#div2",
@@ -166,16 +151,16 @@
                     else
                     {
                         layer.msg(data.msg);
-                        location.href = "/admin/product/list";
+                        location.href = "/admin/event/list";
                     }
                 }
             };
-            $("#form-edit-product").ajaxSubmit(options);
+            $("#form-edit-event").ajaxSubmit(options);
         });
 
         $('#people').select2({
             ajax: {
-                url: "/admin/product/select2_peoples",
+                url: "/admin/event/select2_peoples",
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
@@ -201,6 +186,36 @@
             minimumInputLength: 0,
             theme: 'classic'
         });
+
+        $('#product').select2({
+            ajax: {
+                url: "/admin/event/select2_peoples",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        keyword: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+
+                    params.page = params.page || 1;
+//                    console.log(data);
+                    return {
+                        results: data,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 0,
+            theme: 'classic'
+        });
+
     });
 </script>
 @endsection

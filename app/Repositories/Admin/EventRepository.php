@@ -3,13 +3,14 @@ namespace App\Repositories\Admin;
 
 use App\Models\People;
 use App\Models\Product;
+use App\Models\Event;
 
 use App\Repositories\Common\CommonRepository;
 
 use Response, Auth, Validator, DB, Exception;
 use QrCode;
 
-class ProductRepository {
+class EventRepository {
 
     private $model;
     public function __construct()
@@ -21,7 +22,7 @@ class ProductRepository {
     public function get_list_datatable($post_data)
     {
         $admin = Auth::guard("admin")->user();
-        $query = Product::select("*")->with(['admin','people','peoples']);
+        $query = Event::select("*")->with(['admin']);
         if(!empty($post_data['name'])) $query->where('name', 'like', "%{$post_data['name']}%");
         if(!empty($post_data['title'])) $query->where('title', 'like', "%{$post_data['title']}%");
         if(!empty($post_data['category'])) $query->where('category', 'like', "%{$post_data['category']}%");
@@ -39,7 +40,8 @@ class ProductRepository {
             $order_dir = $order['dir'];
 
             $field = $columns[$order_column]["data"];
-            if($field == "time") $query->orderByRaw(DB::raw('cast(time as SIGNED) '.$order_dir));
+            if($field == "start_time") $query->orderByRaw(DB::raw('cast(start_time as SIGNED) '.$order_dir));
+            if($field == "end_time") $query->orderByRaw(DB::raw('cast(end_time as SIGNED) '.$order_dir));
             $query->orderBy($field, $order_dir);
         }
         else $query->orderBy("updated_at", "desc");
@@ -50,14 +52,6 @@ class ProductRepository {
         foreach ($list as $k => $v)
         {
             $list[$k]->encode_id = encode($v->id);
-            if(!empty($list[$k]->people)) $list[$k]->people->encode_id = encode($v->people->id);
-            if(count($list[$k]->peoples))
-            {
-                foreach($list[$k]->peoples as $key => $val)
-                {
-                    $list[$k]->peoples[$key]->encode_id = encode($val->id);
-                }
-            }
         }
         return datatable_response($list, $draw, $total);
     }
@@ -65,7 +59,7 @@ class ProductRepository {
     // 返回添加视图
     public function view_create()
     {
-        return view('admin.product.edit');
+        return view('admin.event.edit');
     }
     // 返回编辑视图
     public function view_edit()
@@ -76,7 +70,7 @@ class ProductRepository {
 
         if($decode_id == 0)
         {
-            return view('admin.product.edit')->with(['operate'=>'create', 'encode_id'=>$id]);
+            return view('admin.event.edit')->with(['operate'=>'create', 'encode_id'=>$id]);
         }
         else
         {
@@ -84,9 +78,9 @@ class ProductRepository {
             if($data)
             {
                 unset($data->id);
-                return view('admin.product.edit')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
+                return view('admin.event.edit')->with(['operate'=>'edit', 'encode_id'=>$id, 'data'=>$data]);
             }
-            else return response("该作者不存在！", 404);
+            else return response("该事件不存在！", 404);
         }
     }
 
@@ -97,14 +91,15 @@ class ProductRepository {
             'id.required' => '参数有误',
 //            'name.required' => '请输入后台名称',
             'title.required' => '请输入作品标题',
-//            'people_id.required' => '请选择作者',
-//            'people_id.numeric' => '请选择作者',
+//            'start_time.required' => '请输入开始时间',
+//            'end_time.required' => '请输入结束时间',
         ];
         $v = Validator::make($post_data, [
             'id' => 'required',
 //            'name' => 'required',
             'title' => 'required'//,
-//            'people_id' => 'required|numeric'
+//            'start_time' => 'required'
+//            'end_time' => 'required'
         ], $messages);
         if ($v->fails())
         {
@@ -123,44 +118,35 @@ class ProductRepository {
         {
             if($operate == 'create') // $id==0，添加一个新的作者
             {
-                $product = new Product;
+                $event = new Event;
                 $post_data["admin_id"] = $admin->id;
             }
             elseif('edit') // 编辑
             {
-                $product = Product::find($id);
-                if(!$product) return response_error([],"该作者不存在，刷新页面重试");
-                if($product->admin_id != $admin->id) return response_error([],"你没有操作权限");
+                $event = Event::find($id);
+                if(!$event) return response_error([],"该作者不存在，刷新页面重试");
+                if($event->admin_id != $admin->id) return response_error([],"你没有操作权限");
             }
             else throw new Exception("operate--error");
 
-            $bool = $product->fill($post_data)->save();
-            if(!empty($post_data["people_id"]))
-            {
-                $product->peoples()->attach($post_data["people_id"]);
-            }
-            if(!empty($post_data["peoples"]))
-            {
-//                $product->peoples()->attach($post_data["peoples"]);
-                $product->peoples()->syncWithoutDetaching($post_data["peoples"]);
-            }
+            $bool = $event->fill($post_data)->save();
             if($bool)
             {
-                $encode_id = encode($product->id);
+                $encode_id = encode($event->id);
 
                 if(!empty($post_data["cover"]))
                 {
                     $upload = new CommonRepository();
-                    $result = $upload->upload($post_data["cover"], 'unique-cover-products' , 'cover_product_'.$encode_id);
+                    $result = $upload->upload($post_data["cover"], 'unique-cover-events' , 'cover_event'.$encode_id);
                     if($result["status"])
                     {
-                        $product->cover_pic = $result["data"];
-                        $product->save();
+                        $event->cover_pic = $result["data"];
+                        $event->save();
                     }
                     else throw new Exception("upload--cover--fail");
                 }
             }
-            else throw new Exception("insert--product--fail");
+            else throw new Exception("insert--event--fail");
 
 
             DB::commit();
@@ -181,17 +167,16 @@ class ProductRepository {
     {
         $admin = Auth::guard('admin')->user();
         $id = decode($post_data["id"]);
-        if(intval($id) !== 0 && !$id) return response_error([],"该作品不存在，刷新页面试试");
+        if(intval($id) !== 0 && !$id) return response_error([],"该事件不存在，刷新页面试试");
 
-        $product = Product::find($id);
-        if($product->admin_id != $admin->id) return response_error([],"你没有操作权限");
+        $event = Event::find($id);
+        if($event->admin_id != $admin->id) return response_error([],"你没有操作权限");
 
         DB::beginTransaction();
         try
         {
-            $bool = $product->delete();
-            if(!$bool) throw new Exception("delete--product--fail");
-            $product->peoples()->detach();
+            $bool = $event->delete();
+            if(!$bool) throw new Exception("delete--event--fail");
 
             DB::commit();
             return response_success([]);
@@ -209,16 +194,16 @@ class ProductRepository {
     {
         $admin = Auth::guard('admin')->user();
         $id = decode($post_data["id"]);
-        if(intval($id) !== 0 && !$id) return response_error([],"该作品不存在，刷新页面试试");
+        if(intval($id) !== 0 && !$id) return response_error([],"该事件不存在，刷新页面试试");
 
-        $product = Product::find($id);
-        if($product->admin_id != $admin->id) return response_error([],"你没有操作权限");
+        $event = Event::find($id);
+        if($event->admin_id != $admin->id) return response_error([],"你没有操作权限");
         $update["active"] = 1;
         DB::beginTransaction();
         try
         {
-            $bool = $product->fill($update)->save();
-            if(!$bool) throw new Exception("update--product--fail");
+            $bool = $event->fill($update)->save();
+            if(!$bool) throw new Exception("update--event--fail");
 
             DB::commit();
             return response_success([]);
@@ -235,16 +220,16 @@ class ProductRepository {
     {
         $admin = Auth::guard('admin')->user();
         $id = decode($post_data["id"]);
-        if(intval($id) !== 0 && !$id) return response_error([],"该作品不存在，刷新页面试试");
+        if(intval($id) !== 0 && !$id) return response_error([],"该事件不存在，刷新页面试试");
 
-        $product = Product::find($id);
-        if($product->admin_id != $admin->id) return response_error([],"你没有操作权限");
+        $event = Event::find($id);
+        if($event->admin_id != $admin->id) return response_error([],"你没有操作权限");
         $update["active"] = 9;
         DB::beginTransaction();
         try
         {
-            $bool = $product->fill($update)->save();
-            if(!$bool) throw new Exception("update--product--fail");
+            $bool = $event->fill($update)->save();
+            if(!$bool) throw new Exception("update--event--fail");
 
             DB::commit();
             return response_success([]);
@@ -255,6 +240,8 @@ class ProductRepository {
             return response_fail([],'禁用失败，请重试');
         }
     }
+
+
 
     //
     public function select2_peoples($post_data)
@@ -267,6 +254,21 @@ class ProductRepository {
         {
             $keyword = "%{$post_data['keyword']}%";
             $list =People::select(['id','name as text'])->where('name','like',"%$keyword%")->orderBy('id','desc')->get()->toArray();
+        }
+        return $list;
+    }
+
+    //
+    public function select2_products($post_data)
+    {
+        if(empty($post_data['keyword']))
+        {
+            $list =Product::select(['id','title as text'])->orderBy('id','desc')->get()->toArray();
+        }
+        else
+        {
+            $keyword = "%{$post_data['keyword']}%";
+            $list =Product::select(['id','title as text'])->where('title','like',"%$keyword%")->orderBy('id','desc')->get()->toArray();
         }
         return $list;
     }

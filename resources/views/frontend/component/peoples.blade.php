@@ -11,7 +11,7 @@
 
         <div class="box-body item-info-row">
             @if(!empty($data->nation)) <span>【{{$data->nation or ''}}】</span> @endif
-            <span>【{{$data->birth or '未知'}} - {{$data->death or '至今'}}】</span>
+            <span>【{{$data->birth or '未知'}} ~ {{$data->death or '至今'}}】</span>
             <span>【{{$data->major or '未知'}}】</span>
         </div>
 

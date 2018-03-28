@@ -302,37 +302,42 @@ desired effect
             <ul class="sidebar-menu">
 
                 <li class="header">作者管理</li>
-
                 <li class="treeview">
-                    <a href="{{url('/admin/people/list')}}"><i class="fa fa-table text-green"></i> <span>作者管理</span></a>
+                    <a href="{{url('/admin/people/list')}}"><i class="fa fa-table text-green"></i> <span>作者列表</span></a>
                 </li>
-
                 <li class="treeview">
                     <a href="{{url('/admin/people/create')}}"><i class="fa fa-plus text-green"></i> <span>添加作者</span></a>
                 </li>
 
+
                 <li class="header">作品管理</li>
-
                 <li class="treeview">
-                    <a href="{{url('/admin/product/list')}}"><i class="fa fa-table text-blue"></i> <span>作品管理</span></a>
+                    <a href="{{url('/admin/product/list')}}"><i class="fa fa-table text-blue"></i> <span>作品列表</span></a>
                 </li>
-
                 <li class="treeview">
                     <a href="{{url('/admin/product/create')}}"><i class="fa fa-plus text-blue"></i> <span>添加作品</span></a>
                 </li>
 
-                <li class="header">组管理</li>
 
+                <li class="header">事件管理</li>
                 <li class="treeview">
-                    <a href="{{url('/admin/group/list')}}"><i class="fa fa-table text-orange"></i> <span>组管理</span></a>
+                    <a href="{{url('/admin/event/list')}}"><i class="fa fa-table text-red"></i> <span>事件列表</span></a>
+                </li>
+                <li class="treeview">
+                    <a href="{{url('/admin/event/create')}}"><i class="fa fa-plus text-red"></i> <span>添加事件</span></a>
                 </li>
 
+
+                <li class="header">组管理</li>
+                <li class="treeview">
+                    <a href="{{url('/admin/group/list')}}"><i class="fa fa-table text-orange"></i> <span>组列表</span></a>
+                </li>
                 <li class="treeview">
                     <a href="{{url('/admin/group/create')}}"><i class="fa fa-plus text-orange"></i> <span>添加组</span></a>
                 </li>
 
-                <li class="header">作品集</li>
 
+                <li class="header">作品集</li>
                 <li class="treeview">
                     <a href="{{url('/')}}" target="_blank"><i class="fa fa-cube text-default"></i> <span>平台主页</span></a>
                 </li>

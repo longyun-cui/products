@@ -24,20 +24,31 @@ class RootController extends Controller
     {
         return $this->repo->view_peoples(request()->all());
     }
-
     public function view_people()
     {
         return $this->repo->view_people(request()->all());
     }
 
+
+
     public function view_products()
     {
         return $this->repo->view_products(request()->all());
     }
-
     public function view_product()
     {
         return $this->repo->view_product(request()->all());
+    }
+
+
+
+    public function view_events()
+    {
+        return $this->repo->view_events(request()->all());
+    }
+    public function view_event()
+    {
+        return $this->repo->view_event(request()->all());
     }
 
 

@@ -7,8 +7,8 @@ class People extends Model
     //
     protected $table = "peoples";
     protected $fillable = [
-        'sort', 'type', 'active', 'admin_id', 'name', 'description', 'content', 'major', 'nation', 'birth', 'death', 'is_shared',
-        'visit_num', 'share_num'
+        'sort', 'type', 'active', 'admin_id', 'name', 'description', 'content', 'major', 'nation', 'birth', 'death', 'cover_pic',
+        'is_shared', 'visit_num', 'share_num'
     ];
     protected $dateFormat = 'U';
 

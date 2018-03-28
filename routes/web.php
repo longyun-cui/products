@@ -47,6 +47,8 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get('people', 'RootController@view_people');
     Route::get('products', 'RootController@view_products');
     Route::get('product', 'RootController@view_product');
+    Route::get('events', 'RootController@view_events');
+    Route::get('event', 'RootController@view_event');
 
 });
 
@@ -82,53 +84,72 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         // 作者
         Route::group(['prefix' => 'people'], function () {
 
-            $peopleController = 'PeopleController';
+            $controller = 'PeopleController';
 
-            Route::get('/', $peopleController.'@index');
-            Route::get('create', $peopleController.'@createAction');
-            Route::match(['get','post'], 'edit', $peopleController.'@editAction');
-            Route::match(['get','post'], 'list', $peopleController.'@viewList');
-            Route::post('delete', $peopleController.'@deleteAction');
-            Route::post('enable', $peopleController.'@enableAction');
-            Route::post('disable', $peopleController.'@disableAction');
+            Route::get('/', $controller.'@index');
+            Route::get('create', $controller.'@createAction');
+            Route::match(['get','post'], 'edit', $controller.'@editAction');
+            Route::match(['get','post'], 'list', $controller.'@viewList');
+            Route::post('delete', $controller.'@deleteAction');
+            Route::post('enable', $controller.'@enableAction');
+            Route::post('disable', $controller.'@disableAction');
 
-            Route::match(['get','post'], 'product', $peopleController.'@view_people_product_list');
+            Route::match(['get','post'], 'product', $controller.'@view_people_product_list');
         });
 
         // 作品
         Route::group(['prefix' => 'product'], function () {
 
-            $productController = 'ProductController';
+            $controller = 'ProductController';
 
-            Route::get('/', $productController.'@index');
-            Route::get('create', $productController.'@createAction');
-            Route::match(['get','post'], 'edit', $productController.'@editAction');
-            Route::match(['get','post'], 'list', $productController.'@viewList');
-            Route::post('delete', $productController.'@deleteAction');
-            Route::post('enable', $productController.'@enableAction');
-            Route::post('disable', $productController.'@disableAction');
+            Route::get('/', $controller.'@index');
+            Route::get('create', $controller.'@createAction');
+            Route::match(['get','post'], 'edit', $controller.'@editAction');
+            Route::match(['get','post'], 'list', $controller.'@viewList');
+            Route::post('delete', $controller.'@deleteAction');
+            Route::post('enable', $controller.'@enableAction');
+            Route::post('disable', $controller.'@disableAction');
 
 
-            Route::get('select2_peoples', $productController.'@select2_peoples');
+            Route::get('select2_peoples', $controller.'@select2_peoples');
+
+        });
+
+        // 作品
+        Route::group(['prefix' => 'event'], function () {
+
+            $controller = 'EventController';
+
+            Route::get('/', $controller.'@index');
+            Route::get('create', $controller.'@createAction');
+            Route::match(['get','post'], 'edit', $controller.'@editAction');
+            Route::match(['get','post'], 'list', $controller.'@viewList');
+            Route::post('delete', $controller.'@deleteAction');
+            Route::post('enable', $controller.'@enableAction');
+            Route::post('disable', $controller.'@disableAction');
+
+
+            Route::get('select2_peoples', $controller.'@select2_peoples');
+            Route::get('select2_products', $controller.'@select2_products');
 
         });
 
         // 组
         Route::group(['prefix' => 'group'], function () {
 
-            $groupController = 'GroupController';
+            $controller = 'GroupController';
 
-            Route::get('/', $groupController.'@index');
-            Route::get('create', $groupController.'@createAction');
-            Route::match(['get','post'], 'edit', $groupController.'@editAction');
-            Route::match(['get','post'], 'list', $groupController.'@viewList');
-            Route::post('delete', $groupController.'@deleteAction');
-            Route::post('enable', $groupController.'@enableAction');
-            Route::post('disable', $groupController.'@disableAction');
+            Route::get('/', $controller.'@index');
+            Route::get('create', $controller.'@createAction');
+            Route::match(['get','post'], 'edit', $controller.'@editAction');
+            Route::match(['get','post'], 'list', $controller.'@viewList');
+            Route::post('delete', $controller.'@deleteAction');
+            Route::post('enable', $controller.'@enableAction');
+            Route::post('disable', $controller.'@disableAction');
 
 
-            Route::get('select2_peoples', $groupController.'@select2_peoples');
-            Route::get('select2_products', $groupController.'@select2_products');
+            Route::get('select2_peoples', $controller.'@select2_peoples');
+            Route::get('select2_products', $controller.'@select2_products');
 
         });
     });
