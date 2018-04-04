@@ -134,6 +134,8 @@ class ProductRepository {
             }
             else throw new Exception("operate--error");
 
+
+            if(!empty($post_data['time'])) $post_data['time'] = trim($post_data['time']);
             $bool = $product->fill($post_data)->save();
             if(!empty($post_data["people_id"]))
             {

@@ -131,6 +131,8 @@ class PeopleRepository {
             }
             else throw new Exception("operate--error");
 
+            if(!empty($post_data['birth'])) $post_data['birth'] = trim($post_data['birth']);
+            if(!empty($post_data['death'])) $post_data['death'] = trim($post_data['death']);
             $bool = $people->fill($post_data)->save();
             if($bool)
             {

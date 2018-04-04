@@ -129,6 +129,9 @@ class EventRepository {
             }
             else throw new Exception("operate--error");
 
+
+            if(!empty($post_data['start_time'])) $post_data['start_time'] = trim($post_data['start_time']);
+            if(!empty($post_data['end_time'])) $post_data['end_time'] = trim($post_data['end_time']);
             $bool = $event->fill($post_data)->save();
             if($bool)
             {
